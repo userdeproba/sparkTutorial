@@ -9,14 +9,14 @@ import org.apache.spark.api.java.JavaSparkContext;
 public class AirportsByLatitudeSolution {
 
     public static void main(String[] args) throws Exception {
-
+        System.setProperty("hadoop.home.dir", "D:\\Winutils\\");
         SparkConf conf = new SparkConf().setAppName("airports").setMaster("local[2]");
 
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         JavaRDD<String> airports = sc.textFile("in/airports.text");
 
-        JavaRDD<String> airportsInUSA = airports.filter(line -> Float.valueOf(line.split(Utils.COMMA_DELIMITER)[6]) > 40);
+        JavaRDD<String> airportsInUSA = airports.filter(line -> Float.parseFloat(line.split(Utils.COMMA_DELIMITER)[6]) > 40);
 
         JavaRDD<String> airportsNameAndCityNames = airportsInUSA.map(line -> {
                     String[] splits = line.split(Utils.COMMA_DELIMITER);
